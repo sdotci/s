@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace S\Foundation\Cli;
 
+use S\Foundation\Input;
 use S\Foundation\Result;
 
 class Program
 {
-    protected int $argc = 0;
-
-    /** @var list<string> */
-    protected array $argv = [];
+    protected Input $input;
 
     protected array $commands = [];
 
     public function __construct(?int $argc = null, ?array $argv = null)
     {
-        $this->argv = (array) ($argv ?? $_SERVER['argv'] ?? []);
-        $this->argc = (int) ($argc ?? $_SERVER['argc'] ?? count($this->argv));
+        $values = (array) ($argv ?? $_SERVER['argv'] ?? []);
+        $count = (int) ($argc ?? $_SERVER['argc'] ?? count($this->argv));
+
+        $this->input = new ArgsInput($count, $values);
     }
 
     /**
@@ -41,23 +41,15 @@ class Program
      **/
     public function run(): never
     {
-        $args = $this->argv;
-        $count = $this->argc;
+        $input = $this->input;
 
-        if ($count !== count($args)) {
-            exit_error('Wrong arguments count');
-        }
+        $arg0 = $input->get(0);
 
-        if ($count < 1) {
-            exit_error('No argument given');
-        }
-
-        $arg0 = $args[0];
         $binFile = realpath($arg0);
-        $args = array_slice($args, 1);
+        $input->remove(0);
 
         foreach ($this->commands as $command) {
-            if ($command->match(implode(' ', $args))) {
+            if ($command->match(implode(' ', $input->getData()))) {
                 $command->resolve()->send();
             }
         }
