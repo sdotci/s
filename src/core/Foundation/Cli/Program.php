@@ -8,9 +8,18 @@ use S\Foundation\Result;
 
 class Program
 {
+    protected int $argc = 0;
+
+    /** @var list<string> */
+    protected array $argv = [];
+
     protected array $commands = [];
 
-    public function __construct(protected string $name = '', protected string $version = '') {}
+    public function __construct(?int $argc = null, ?array $argv = null)
+    {
+        $this->argv = (array) ($argv ?? $_SERVER['argv'] ?? []);
+        $this->argc = (int) ($argc ?? $_SERVER['argc'] ?? count($this->argv));
+    }
 
     /**
      * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
@@ -30,11 +39,10 @@ class Program
     /**
      * @param  null|array<string>  $argv
      **/
-    public function run(?int $argc = null, ?array $argv = null): never
+    public function run(): never
     {
-        /** @var array<string> */
-        $args = $argv ?? $_SERVER['argv'] ?? [];
-        $count ??= $argc ?? count($args);
+        $args = $this->argv;
+        $count = $this->argc;
 
         if ($count !== count($args)) {
             exit_error('Wrong arguments count');
@@ -44,8 +52,8 @@ class Program
             exit_error('No argument given');
         }
 
-        $argv0 = $argv[0];
-        $binFile = realpath($argv0);
+        $arg0 = $args[0];
+        $binFile = realpath($arg0);
         $args = array_slice($args, 1);
 
         foreach ($this->commands as $command) {
