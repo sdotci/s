@@ -6,6 +6,8 @@ namespace S\Foundation;
 
 abstract class Action
 {
+    protected array $matches = [];
+
     /**
      * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
      */
@@ -22,6 +24,8 @@ abstract class Action
 
         return $this;
     }
+
+    abstract public function getPattern(): string;
 
     /**
      * @return array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed
@@ -63,5 +67,24 @@ abstract class Action
         $this->description = $description;
 
         return $this;
+    }
+
+    public function match(string $subject): bool
+    {
+        $pattern = $this->getPattern();
+
+        return preg_match("/$pattern/", $subject, $this->matches) === 1;
+    }
+
+    public function getMatches(): array
+    {
+        return $this->matches;
+    }
+
+    public function resolve(mixed ...$args): Result
+    {
+        $result = ($this->handler)(...$args);
+
+        return new Result($result);
     }
 }

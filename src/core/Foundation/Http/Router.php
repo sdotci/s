@@ -28,15 +28,10 @@ class Router
     public function run(string $request): void
     {
         foreach ($this->routes as $route) {
-            $signature = str_replace('/', '\\/', $route->getSignature());
-            $pattern = "/{$signature}/";
-            if (preg_match($pattern, $request, $matches)) {
-                $handler = $route->getHandler();
-                $result = $handler(...$matches);
+            if ($route->match($request)) {
+                $route->resolve()->send();
 
-                if (is_string($result)) {
-                    echo $result;
-                }
+                return;
             }
         }
     }
