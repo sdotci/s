@@ -39,7 +39,7 @@ class Server
         $method = $input->get('REQUEST_METHOD', 'GET');
         $uri = $input->get('REQUEST_URI', '/');
 
-        $startLine = "{$method} $uri";
+        $startLine = "{$method} {$uri}";
 
         foreach ($this->routes as $route) {
             if ($route->match($startLine)) {

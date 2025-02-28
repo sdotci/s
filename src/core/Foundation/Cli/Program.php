@@ -16,7 +16,7 @@ class Program
     public function __construct(?int $argc = null, ?array $argv = null)
     {
         $values = (array) ($argv ?? $_SERVER['argv'] ?? []);
-        $count = (int) ($argc ?? $_SERVER['argc'] ?? count($this->argv));
+        $count = (int) ($argc ?? $_SERVER['argc'] ?? count($values));
 
         $this->input = new ArgsInput($count, $values);
     }
@@ -36,9 +36,6 @@ class Program
         return $command;
     }
 
-    /**
-     * @param  null|array<string>  $argv
-     **/
     public function run(): never
     {
         $input = $this->input;
