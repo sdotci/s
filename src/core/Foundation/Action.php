@@ -7,9 +7,9 @@ namespace S\Foundation;
 abstract class Action
 {
     /**
-     * @param array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed $handler
+     * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
      */
-    public function __construct(protected string $signature, protected array|string|object|callable $handler, protected ?string $name = null, protected ?string $description = null) {}
+    public function __construct(protected string $signature, protected mixed $handler, protected ?string $name = null, protected ?string $description = null) {}
 
     public function getSignature(): string
     {
@@ -50,9 +50,8 @@ abstract class Action
     {
         $this->name = $name;
 
-        return $this
+        return $this;
     }
-
 
     public function getDescription(): ?string
     {
