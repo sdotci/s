@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace S\Foundation\Http;
 
+use S\Foundation\Input;
+
 class Server
 {
-    /** @var array<string, string> */
-    protected array $input = [];
+    protected Input $input;
 
     protected array $routes = [];
 
     public function __construct(?array $input = null)
     {
-        $this->input = $input ?? $_SERVER;
+        $this->input = new ServerInput($input);
     }
 
     /**
@@ -35,8 +36,8 @@ class Server
     {
         $input = $this->input;
 
-        $method = $input['REQUEST_METHOD'] ?? 'GET';
-        $uri = $input['REQUEST_URI'] ?? '/';
+        $method = $input->get('REQUEST_METHOD', 'GET');
+        $uri = $input->get('REQUEST_URI', '/');
 
         $startLine = "{$method} $uri";
 
