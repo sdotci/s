@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace S\Foundation\Http;
 
-class Router
+class Server
 {
+    /** @var array<string, string> */
+    protected array $input = [];
+
     protected array $routes = [];
 
-    public function __construct(protected string $base = '', protected string $path = '') {}
+    public function __construct(?array $input = null)
+    {
+        $this->input = $input ?? $_SERVER;
+    }
 
     /**
      * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
@@ -25,10 +31,17 @@ class Router
         return $route;
     }
 
-    public function run(string $request): void
+    public function run(): void
     {
+        $input = $this->input;
+
+        $method = $input['REQUEST_METHOD'] ?? 'GET';
+        $uri = $input['REQUEST_URI'] ?? '/';
+
+        $startLine = "{$method} $uri";
+
         foreach ($this->routes as $route) {
-            if ($route->match($request)) {
+            if ($route->match($startLine)) {
                 $route->resolve()->send();
 
                 return;
