@@ -45,6 +45,7 @@ class Application extends BaseApplication
 
         foreach ($this->routes as $route) {
             if ($route->match($startLine)) {
+                $context->withAttributes($route->getMatches());
                 $route->resolve($context)->send();
 
                 return;

@@ -43,6 +43,7 @@ class Application extends BaseApplication
 
         foreach ($this->commands as $command) {
             if ($command->match(implode(' ', $input->getData()))) {
+                $context->withAttributes($command->getMatches());
                 $command->resolve($context)->send();
             }
         }
