@@ -10,8 +10,11 @@ class ArgsInput extends Input
 {
     protected int $count = 0;
 
-    public function __construct(int $count, array $values)
+    public function __construct(?int $count, ?array $values)
     {
+        $values ??= $_SERVER['argv'] ?? [];
+        $count ??= $_SERVER['argc'] ?? count($values);
+
         if ($count !== count($values)) {
             exit_error('Wrong arguments count');
         }
