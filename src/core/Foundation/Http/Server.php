@@ -12,10 +12,7 @@ class Server
 
     protected array $routes = [];
 
-    public function __construct(?array $input = null)
-    {
-        $this->input = new ServerInput($input);
-    }
+    public function __construct(protected Context $context) {}
 
     /**
      * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
@@ -34,7 +31,7 @@ class Server
 
     public function run(): void
     {
-        $input = $this->input;
+        $input = $this->context->getInput();
 
         $method = $input->get('REQUEST_METHOD', 'GET');
         $uri = $input->get('REQUEST_URI', '/');

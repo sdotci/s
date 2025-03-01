@@ -4,22 +4,13 @@ declare(strict_types=1);
 
 namespace S\Foundation\Cli;
 
-use S\Foundation\Input;
 use S\Foundation\Result;
 
 class Program
 {
-    protected Input $input;
-
     protected array $commands = [];
 
-    public function __construct(?int $argc = null, ?array $argv = null)
-    {
-        $values = (array) ($argv ?? $_SERVER['argv'] ?? []);
-        $count = (int) ($argc ?? $_SERVER['argc'] ?? count($values));
-
-        $this->input = new ArgsInput($count, $values);
-    }
+    public function __construct(protected Context $context) {}
 
     /**
      * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
@@ -38,7 +29,7 @@ class Program
 
     public function run(): never
     {
-        $input = $this->input;
+        $input = $this->context->getInput();
 
         $arg0 = $input->get(0);
 
