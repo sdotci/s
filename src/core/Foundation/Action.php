@@ -81,9 +81,9 @@ abstract class Action
         return $this->matches;
     }
 
-    public function resolve(mixed ...$args): Result
+    public function resolve($context, mixed ...$args): Result
     {
-        $result = ($this->handler)(...$args);
+        $result = ($this->handler)($context, ...$args);
 
         return new Result($result);
     }

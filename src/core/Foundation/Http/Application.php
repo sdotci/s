@@ -35,6 +35,7 @@ class Application extends BaseApplication
 
     public function run(): void
     {
+        $context = $this->context;
         $input = $this->context->getInput();
 
         $method = $input->get('REQUEST_METHOD', 'GET');
@@ -44,7 +45,7 @@ class Application extends BaseApplication
 
         foreach ($this->routes as $route) {
             if ($route->match($startLine)) {
-                $route->resolve()->send();
+                $route->resolve($context)->send();
 
                 return;
             }

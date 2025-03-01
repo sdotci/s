@@ -33,6 +33,7 @@ class Application extends BaseApplication
 
     public function run(): never
     {
+        $context = $this->context;
         $input = $this->context->getInput();
 
         $arg0 = $input->get(0);
@@ -42,7 +43,7 @@ class Application extends BaseApplication
 
         foreach ($this->commands as $command) {
             if ($command->match(implode(' ', $input->getData()))) {
-                $command->resolve()->send();
+                $command->resolve($context)->send();
             }
         }
 
