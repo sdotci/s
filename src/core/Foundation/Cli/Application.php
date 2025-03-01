@@ -11,7 +11,10 @@ class Application extends BaseApplication
 {
     protected array $commands = [];
 
-    public function __construct(protected Context $context) {}
+    public function __construct(Context $context)
+    {
+        parent::__construct($context);
+    }
 
     /**
      * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler

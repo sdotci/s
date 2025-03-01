@@ -8,5 +8,7 @@ use S\Concretes\Container;
 
 abstract class Application extends Container
 {
+    public function __construct(protected Context $context) {}
+
     abstract public function run(): void;
 }
