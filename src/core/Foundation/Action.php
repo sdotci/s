@@ -81,9 +81,16 @@ abstract class Action
         return $this->matches;
     }
 
-    public function resolve($context, mixed ...$args): Result
+    public function resolve($context): Result
     {
-        $result = ($this->handler)($context, ...$args);
+        $args = [];
+        $args['ctx'] = $args['context'] = $context;
+        $args['in'] = $args['input'] = $context->getInput();
+        $args['attr'] = $args['attributes'] = $context->getAttributes();
+        foreach ($context->getAttributes() as $key => $value) {
+            $args[$key] = $value;
+        }
+        $result = $context->invokeArgs($this->handler, $args);
 
         return new Result($result);
     }
