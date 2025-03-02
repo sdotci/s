@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace S\Foundation;
 
-abstract class Context
+use S\Foundation\Concretes\Container;
+
+abstract class Context extends Container
 {
     /**
      * @var mixed[]
      */
     protected array $attributes = [];
 
-    public function __construct(protected Input $input) {}
+    public function __construct(protected Input $input)
+    {
+        parent::__construct(compact('input'));
+    }
 
     abstract public static function global(): self;
 
