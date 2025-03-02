@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsInt;
-use S\Contracts\IsInt;
+use S\Foundation\Concerns\AsInt;
+use S\Foundation\Contracts\IsInt;
 
 class IntObject implements IsInt
 {

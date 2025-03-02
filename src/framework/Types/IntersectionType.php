@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace S\Types;
 
-use S\Concerns\AsIntersectionType;
-use S\Contracts\IsIntersectionType;
-use S\Contracts\IsType;
+use S\Foundation\Concerns\AsIntersectionType;
+use S\Foundation\Contracts\IsIntersectionType;
+use S\Foundation\Contracts\IsType;
 
 final class IntersectionType extends Type implements IsIntersectionType
 {

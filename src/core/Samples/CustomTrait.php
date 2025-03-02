@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace S\Samples;
 
-use S\Concerns\HasEncapsulator;
+use S\Foundation\Concerns\HasEncapsulator;
 
 trait CustomTrait
 {

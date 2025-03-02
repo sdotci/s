@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsNumber;
-use S\Contracts\IsNumber;
+use S\Foundation\Concerns\AsNumber;
+use S\Foundation\Contracts\IsNumber;
 
 class NumberObject implements IsNumber
 {

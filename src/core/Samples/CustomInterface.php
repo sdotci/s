@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace S\Samples;
 
-use S\Contracts\IsEncapsulated;
+use S\Foundation\Contracts\IsEncapsulated;
 
 interface CustomInterface extends IsEncapsulated
 {

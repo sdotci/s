@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsMixed;
-use S\Contracts\IsMixed;
+use S\Foundation\Concerns\AsMixed;
+use S\Foundation\Contracts\IsMixed;
 
 class MixedObject implements IsMixed
 {

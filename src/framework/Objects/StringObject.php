@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsString;
-use S\Contracts\IsString;
+use S\Foundation\Concerns\AsString;
+use S\Foundation\Contracts\IsString;
 
 class StringObject implements IsString
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Cast;
-use S\Contracts\IsScalar;
-use S\Contracts\IsString;
+use S\Foundation\Concretes\Cast;
+use S\Foundation\Contracts\IsScalar;
+use S\Foundation\Contracts\IsString;
 use S\Objects\StringObject;
 
 beforeEach(function () {

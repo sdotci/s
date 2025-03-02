@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-use S\Bases\BaseArgument;
-use S\Concretes\Argument;
-use S\Contracts\IsArgument;
+use S\Foundation\Concretes\Argument;
+use S\Foundation\Contracts\IsArgument;
 
 test('argument', function () {
     $argument = new Argument(0, 'phi');
     expect($argument)->toBeInstanceOf(Argument::class);
-    expect($argument)->toBeInstanceOf(BaseArgument::class);
     expect($argument)->toBeInstanceOf(IsArgument::class);
 
     expect($argument->getIndex())->toEqual(0);

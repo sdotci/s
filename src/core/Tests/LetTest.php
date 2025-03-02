@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Tests;
 
-use S\Concretes\Let;
-use S\Concretes\Statement;
+use S\Foundation\Concretes\Let;
+use S\Foundation\Concretes\Statement;
 
 class LetTest implements Statement
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Cast;
-use S\Contracts\IsMixed;
-use S\Contracts\IsScalar;
+use S\Foundation\Concretes\Cast;
+use S\Foundation\Contracts\IsMixed;
+use S\Foundation\Contracts\IsScalar;
 use S\Objects\ScalarObject;
 
 beforeEach(function () {

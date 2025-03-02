@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsBool;
-use S\Contracts\IsBool;
+use S\Foundation\Concerns\AsBool;
+use S\Foundation\Contracts\IsBool;
 
 class BoolObject implements IsBool
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Cast;
-use S\Contracts\IsFloat;
-use S\Contracts\IsNumber;
+use S\Foundation\Concretes\Cast;
+use S\Foundation\Contracts\IsFloat;
+use S\Foundation\Contracts\IsNumber;
 use S\Objects\FloatObject;
 
 beforeEach(function () {

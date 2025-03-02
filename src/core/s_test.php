@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Backtrace;
-use S\Concretes\Container;
-use S\Contracts\IsAccessible;
-use S\Contracts\IsEncapsulated;
-use S\Contracts\IsModifiable;
-use S\Contracts\IsResolvable;
 use S\Exceptions\NotFound;
+use S\Foundation\Concretes\Container;
+use S\Foundation\Contracts\IsAccessible;
+use S\Foundation\Contracts\IsEncapsulated;
+use S\Foundation\Contracts\IsModifiable;
+use S\Foundation\Contracts\IsResolvable;
 use S\Samples\CustomClass;
+use S\Support\Backtrace;
 
 beforeEach(function () {
     $this->trace = new Backtrace;

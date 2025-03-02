@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsFloat;
-use S\Contracts\IsFloat;
+use S\Foundation\Concerns\AsFloat;
+use S\Foundation\Contracts\IsFloat;
 
 class FloatObject implements IsFloat
 {

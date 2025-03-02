@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace S\Types;
 
-use S\Concerns\AsNamedType;
-use S\Contracts\IsNamedType;
-use S\Enums\BuiltinType;
+use S\Foundation\Concerns\AsNamedType;
+use S\Foundation\Contracts\IsNamedType;
+use S\Foundation\Enums\BuiltinType;
 
 final class NamedType extends Type implements IsNamedType
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Backtrace;
-use S\Concretes\FtpClient;
-use S\Concretes\FtpDotenv;
-use S\Concretes\FtpServer;
-use S\Concretes\Let;
-use S\Concretes\Map;
-use S\Concretes\Statement;
 use S\Config\Loader as ConfigLoader;
+use S\Foundation\Concretes\FtpClient;
+use S\Foundation\Concretes\FtpDotenv;
+use S\Foundation\Concretes\FtpServer;
+use S\Foundation\Concretes\Let;
+use S\Foundation\Concretes\Map;
+use S\Foundation\Concretes\Statement;
+use S\Support\Backtrace;
 
 if (! function_exists('backtrace')) {
     function backtrace(int $flags = Backtrace::DEFAULT_FLAGS, int $reset = Backtrace::DEFAULT_RESET, int $limit = Backtrace::DEFAULT_LIMIT): Backtrace

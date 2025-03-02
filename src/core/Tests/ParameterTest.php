@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-use S\Bases\BaseParameter;
-use S\Concretes\Parameter;
-use S\Contracts\IsParameter;
-use S\Enums\BuiltinType;
+use S\Foundation\Concretes\Parameter;
+use S\Foundation\Contracts\IsParameter;
+use S\Foundation\Enums\BuiltinType;
 
 test('parameter', function () {
     $parameter = new Parameter('string', 'engine', 'phi');
 
     expect($parameter)->toBeInstanceOf(Parameter::class);
-    expect($parameter)->toBeInstanceOf(BaseParameter::class);
     expect($parameter)->toBeInstanceOf(IsParameter::class);
 
     expect($parameter->getName())->toEqual('engine');

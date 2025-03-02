@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Alias;
-use S\Concretes\Aliases;
+use S\Foundation\Concretes\Alias;
+use S\Foundation\Concretes\Aliases;
 
 test('aliases', function () {
     $aliases = new Aliases('b', 'hi', new Alias('p'));

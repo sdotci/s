@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace S\Objects;
 
-use S\Concerns\AsScalar;
-use S\Contracts\IsScalar;
+use S\Foundation\Concerns\AsScalar;
+use S\Foundation\Contracts\IsScalar;
 
 class ScalarObject implements IsScalar
 {

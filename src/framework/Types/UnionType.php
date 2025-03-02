@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace S\Types;
 
-use S\Concerns\AsUnionType;
-use S\Contracts\IsType;
-use S\Contracts\IsUnionType;
+use S\Foundation\Concerns\AsUnionType;
+use S\Foundation\Contracts\IsType;
+use S\Foundation\Contracts\IsUnionType;
 
 final class UnionType extends Type implements IsUnionType
 {

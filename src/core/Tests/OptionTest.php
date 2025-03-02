@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-use S\Bases\BaseOption;
-use S\Concretes\Option;
-use S\Contracts\IsOption;
+use S\Foundation\Concretes\Option;
+use S\Foundation\Contracts\IsOption;
 
 test('option', function () {
     $option = new Option('engine', 'phi');
 
     expect($option)->toBeInstanceOf(Option::class);
-    expect($option)->toBeInstanceOf(BaseOption::class);
     expect($option)->toBeInstanceOf(IsOption::class);
 
     expect($option->getKey())->toEqual('engine');

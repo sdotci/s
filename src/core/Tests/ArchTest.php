@@ -47,4 +47,4 @@ arch('types')
     ->expect('S\Types')
     ->classes()
     ->toHaveSuffix('Type')
-    ->toExtend(\S\Bases\BaseType::class);
+    ->toExtend(\S\Foundation\Type::class);

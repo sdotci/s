@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use S\Concretes\Cast;
-use S\Contracts\IsBool;
-use S\Contracts\IsScalar;
+use S\Foundation\Concretes\Cast;
+use S\Foundation\Contracts\IsBool;
+use S\Foundation\Contracts\IsScalar;
 use S\Objects\BoolObject;
 
 beforeEach(function () {
