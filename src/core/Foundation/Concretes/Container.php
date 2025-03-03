@@ -30,13 +30,13 @@ class Container implements ContainerInterface
      */
     public function __construct(array $dependencies = [])
     {
-        $this->setComponents($dependencies);
+        $this->setDependencies($dependencies);
     }
 
     /**
      * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $dependencies
      */
-    public function setComponents(array $dependencies): static
+    public function setDependencies(array $dependencies): static
     {
         foreach ($dependencies as $id => $dependency) {
             $this->set($id, $dependency);
@@ -59,13 +59,13 @@ class Container implements ContainerInterface
         return $this;
     }
 
-    public function get(string $id): mixed
+    public function get(string $id, mixed $default = null): mixed
     {
         if (isset($this->aliases[$id])) {
-            return $this->get($this->aliases[$id]);
+            return $this->get($this->aliases[$id], $default);
         }
 
-        return $this->build($id);
+        return $this->dependencies[$id] ?? $default ?? $id;
     }
 
     public function has(string $id): bool
@@ -75,11 +75,11 @@ class Container implements ContainerInterface
 
     public function build(string $id): mixed
     {
-        if (! (isset($this->dependencies[$id]) || class_exists($id))) {
+        $dependency = $this->get($id);
+
+        if (! class_exists($dependency)) {
             throw NotFound::new('Could not build %s.', [$id]);
         }
-
-        $dependency = $this->dependencies[$id] ?? $id;
 
         if (is_array($dependency)) {
             if (class_exists($id)) {
