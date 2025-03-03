@@ -16,6 +16,11 @@ use S\Support\Reflector;
 class Container implements ContainerInterface
 {
     /**
+     * @var array<string, mixed>
+     */
+    protected array $shared = [];
+
+    /**
      * @var array<string, mixed[]|string|object|callable(mixed ...$args): mixed>
      */
     protected array $dependencies = [];
@@ -71,6 +76,11 @@ class Container implements ContainerInterface
     public function has(string $id): bool
     {
         return isset($this->aliases[$id]) || isset($this->dependencies[$id]);
+    }
+
+    public function shared(string $id): mixed
+    {
+        return $this->shared[$id] ??= $this->build($id);
     }
 
     public function build(string $id): mixed
