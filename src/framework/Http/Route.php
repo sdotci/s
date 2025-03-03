@@ -10,7 +10,9 @@ class Route extends Action
 {
     public function getPattern(): string
     {
-        $pattern = str_replace(['/', '{', '}'], ['\\/', '(?P<', '>.*)'], $this->getSignature());
+        $pattern = $this->getSignature();
+        $pattern = preg_replace('/\s+/', ' ', $pattern);
+        $pattern = str_replace(['/', '{', '}', ' '], ['\\/', '(?P<', '>.*)', '\s+'], $pattern);
 
         return $pattern;
     }
