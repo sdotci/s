@@ -18,7 +18,7 @@ class Container implements ContainerInterface
     /**
      * @var array<string, mixed[]|string|object|callable(mixed ...$args): mixed>
      */
-    private array $components = [];
+    protected array $components = [];
 
     /**
      * @var array<string, class-string|trait-string|string>
@@ -76,7 +76,7 @@ class Container implements ContainerInterface
     public function build(string $id): mixed
     {
         if (! (isset($this->components[$id]) || class_exists($id))) {
-            throw NotFound::with('Could not build %s.', [$id]);
+            throw NotFound::new('Could not build %s.', [$id]);
         }
 
         $component = $this->components[$id] ?? $id;
@@ -90,7 +90,7 @@ class Container implements ContainerInterface
                 return $this->invokeArgs($id, $component);
             }
 
-            throw BadValue::with('Invalid component given');
+            throw BadValue::new('Invalid component given');
         }
 
         if (is_callable($component)) {
@@ -190,7 +190,7 @@ class Container implements ContainerInterface
             return $reflectionClass->newInstance();
         }
 
-        throw BadValue::with('The class %s cannot be instantiated.', [$object_or_class::class]);
+        throw BadValue::new('The class %s cannot be instantiated.', [$object_or_class::class]);
     }
 
     /**
@@ -242,7 +242,7 @@ class Container implements ContainerInterface
         }
 
         if (! Reflector::checkType($type = $func->getReturnType(), $result)) {
-            throw BadValue::with('%s expected but %s provided.', [(string) $type ?: 'mixed', get_debug_type($result)]);
+            throw BadValue::new('%s expected but %s provided.', [(string) $type ?: 'mixed', get_debug_type($result)]);
         }
 
         return $result;
