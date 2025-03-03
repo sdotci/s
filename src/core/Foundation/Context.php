@@ -20,6 +20,14 @@ abstract class Context extends Container
 
     abstract public static function global(): self;
 
+    /**
+     * @param  array<callable-string|callable-object>|array{object|class-string,string}|callable-string|callable-object|callable(mixed ...$args): mixed  $handler
+     */
+    public function on(string $signature, array|string|object|callable $handler, ?string $name = null, ?string $description = null): Route
+    {
+        return $this->add(new Route($signature, $handler, $name, $description));
+    }
+
     public function getInput(): Input
     {
         return $this->input;
@@ -31,6 +39,8 @@ abstract class Context extends Container
 
         return $this;
     }
+
+    abstract public function getSubject(): string;
 
     /**
      * @return mixed[]
