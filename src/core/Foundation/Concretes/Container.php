@@ -18,42 +18,42 @@ class Container implements ContainerInterface
     /**
      * @var array<string, mixed[]|string|object|callable(mixed ...$args): mixed>
      */
-    protected array $components = [];
+    protected array $dependencies = [];
 
     /**
      * @var array<string, class-string|trait-string|string>
      */
-    private array $aliases = [];
+    protected array $aliases = [];
 
     /**
-     * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $components
+     * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $dependencies
      */
-    public function __construct(array $components = [])
+    public function __construct(array $dependencies = [])
     {
-        $this->setComponents($components);
+        $this->setComponents($dependencies);
     }
 
     /**
-     * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $components
+     * @param  array<string, mixed[]|string|object|callable(mixed ...$args): mixed>  $dependencies
      */
-    public function setComponents(array $components): static
+    public function setComponents(array $dependencies): static
     {
-        foreach ($components as $id => $component) {
-            $this->set($id, $component);
+        foreach ($dependencies as $id => $dependency) {
+            $this->set($id, $dependency);
         }
 
         return $this;
     }
 
     /**
-     * @param  mixed[]|string|object|callable(mixed ...$args): mixed  $component
+     * @param  mixed[]|string|object|callable(mixed ...$args): mixed  $dependency
      */
-    public function set(string $id, array|string|object|callable $component): static
+    public function set(string $id, array|string|object|callable $dependency): static
     {
-        if (is_string($component) && ! is_callable($component)) {
-            $this->aliases[$id] = $component;
+        if (is_string($dependency) && ! is_callable($dependency)) {
+            $this->aliases[$id] = $dependency;
         } else {
-            $this->components[$id] = $component;
+            $this->dependencies[$id] = $dependency;
         }
 
         return $this;
@@ -70,40 +70,40 @@ class Container implements ContainerInterface
 
     public function has(string $id): bool
     {
-        return isset($this->aliases[$id]) || isset($this->components[$id]);
+        return isset($this->aliases[$id]) || isset($this->dependencies[$id]);
     }
 
     public function build(string $id): mixed
     {
-        if (! (isset($this->components[$id]) || class_exists($id))) {
+        if (! (isset($this->dependencies[$id]) || class_exists($id))) {
             throw NotFound::new('Could not build %s.', [$id]);
         }
 
-        $component = $this->components[$id] ?? $id;
+        $dependency = $this->dependencies[$id] ?? $id;
 
-        if (is_array($component)) {
+        if (is_array($dependency)) {
             if (class_exists($id)) {
-                return $this->instanciateArgs($id, $component);
+                return $this->instanciateArgs($id, $dependency);
             }
 
             if (is_callable($id)) {
-                return $this->invokeArgs($id, $component);
+                return $this->invokeArgs($id, $dependency);
             }
 
-            throw BadValue::new('Invalid component given');
+            throw BadValue::new('Invalid dependency given');
         }
 
-        if (is_callable($component)) {
-            return $this->invoke($component);
+        if (is_callable($dependency)) {
+            return $this->invoke($dependency);
         }
-        if (is_object($component)) {
-            return $this->instanciate($component);
+        if (is_object($dependency)) {
+            return $this->instanciate($dependency);
         }
-        if (class_exists($component)) {
-            return $this->instanciate($component);
+        if (class_exists($dependency)) {
+            return $this->instanciate($dependency);
         }
 
-        return $this->get($component);
+        return $this->get($dependency);
     }
 
     /**
@@ -119,7 +119,7 @@ class Container implements ContainerInterface
             }
         }
 
-        foreach (array_keys($this->components) as $id) {
+        foreach (array_keys($this->dependencies) as $id) {
             if ($class = $this->getClass($id)) {
                 $classes[] = $class;
             }
@@ -133,15 +133,15 @@ class Container implements ContainerInterface
      */
     public function getClass(string $id): ?string
     {
-        if (isset($this->components[$id])) {
-            $component = $this->components[$id];
+        if (isset($this->dependencies[$id])) {
+            $dependency = $this->dependencies[$id];
 
-            if (is_object($component)) {
-                return $component::class;
+            if (is_object($dependency)) {
+                return $dependency::class;
             }
 
-            if (is_string($component)) {
-                return class_exists($component) || interface_exists($component) ? $component : $this->getClass($component);
+            if (is_string($dependency)) {
+                return class_exists($dependency) || interface_exists($dependency) ? $dependency : $this->getClass($dependency);
             }
 
             if (class_exists($id)) {
