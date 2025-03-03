@@ -81,8 +81,8 @@ it('should provide the components', function () {
     ]);
 
     expect($c)->toBeInstanceOf(Container::class);
-    expect($class = $c->get('class'))->toBeInstanceOf(CustomClass::class);
-    expect($interface = $c->get(CustomInterface::class))->toBeInstanceOf(CustomClass::class);
+    expect($class = $c->build('class'))->toBeInstanceOf(CustomClass::class);
+    expect($interface = $c->build(CustomInterface::class))->toBeInstanceOf(CustomClass::class);
     expect($class->getName())->toEqual('S');
     expect($interface->getName())->toEqual('World');
 });

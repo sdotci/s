@@ -9,7 +9,6 @@ use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use S\Exceptions\BadValue;
-use S\Exceptions\NotFound;
 use S\Support\Callback;
 use S\Support\Reflector;
 
@@ -56,12 +55,10 @@ class Container implements ContainerInterface
     public function set(string $id, array|string|object|callable $dependency): static
     {
         if (is_string($dependency) && ! is_callable($dependency)) {
-            $this->aliases[$id] = $dependency;
-        } else {
-            $this->dependencies[$id] = $dependency;
+            return $this->setAlias($id, $dependency);
         }
 
-        return $this;
+        return $this->setDependency($id, $dependency);
     }
 
     public function get(string $id, mixed $default = null): mixed
@@ -75,7 +72,50 @@ class Container implements ContainerInterface
 
     public function has(string $id): bool
     {
-        return isset($this->aliases[$id]) || isset($this->dependencies[$id]);
+        return $this->hasAlias($id) || $this->hasDependencies($id);
+    }
+
+    public function setAlias(string $alias, string $concrete): static
+    {
+        $this->aliases[$alias] = $concrete;
+
+        return $this;
+    }
+
+    public function getConcrete(string $id): string
+    {
+        $concrete = $this->aliases[$id] ?? null;
+
+        if (is_string($concrete) && ! is_callable($concrete)) {
+            return $this->getConcrete($concrete);
+        }
+
+        return $id;
+    }
+
+    /**
+     * @param  mixed[]|string|object|callable(mixed ...$args): mixed  $dependency
+     */
+    public function setDependency(string $id, array|string|object|callable $dependency): static
+    {
+        $this->dependencies[$id] = $dependency;
+
+        return $this;
+    }
+
+    public function hasAlias(string $id): bool
+    {
+        return isset($this->aliases[$id]);
+    }
+
+    public function hasDependencies(string $id): bool
+    {
+        return isset($this->dependencies[$id]);
+    }
+
+    public function hasShared(string $id): bool
+    {
+        return isset($this->shared[$id]);
     }
 
     public function shared(string $id): mixed
@@ -86,19 +126,17 @@ class Container implements ContainerInterface
     public function build(string $id): mixed
     {
         $dependency = $this->get($id);
-
-        if (! class_exists($dependency)) {
-            throw NotFound::new('Could not build %s.', [$id]);
-        }
+        $class = $this->getClass($id, $id);
 
         if (is_array($dependency)) {
-            if (class_exists($id)) {
-                return $this->instanciateArgs($id, $dependency);
+            if (class_exists($class)) {
+                return $this->instanciateArgs($class, $dependency);
             }
 
-            if (is_callable($id)) {
-                return $this->invokeArgs($id, $dependency);
+            if (is_callable($class)) {
+                return $this->invokeArgs($class, $dependency);
             }
+            dd($id, $class, $dependency);
 
             throw BadValue::new('Invalid dependency given');
         }
@@ -141,25 +179,19 @@ class Container implements ContainerInterface
     /**
      * @return null|class-string
      */
-    public function getClass(string $id): ?string
+    public function getClass(string $id, ?string $default = null): ?string
     {
-        if (isset($this->dependencies[$id])) {
-            $dependency = $this->dependencies[$id];
+        $class = $this->getConcrete($id);
 
-            if (is_object($dependency)) {
-                return $dependency::class;
-            }
-
-            if (is_string($dependency)) {
-                return class_exists($dependency) || interface_exists($dependency) ? $dependency : $this->getClass($dependency);
-            }
-
-            if (class_exists($id)) {
-                return $id;
-            }
+        if (is_object($class)) {
+            return $class::class;
         }
 
-        return null;
+        if (class_exists($class) || interface_exists($class)) {
+            return $class;
+        }
+
+        return $default;
     }
 
     /**
